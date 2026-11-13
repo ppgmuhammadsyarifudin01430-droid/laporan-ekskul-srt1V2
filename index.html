@@ -13,17 +13,18 @@
       background-color: #f1f5f9;
     }
     .paper-a4 {
-      width: 210mm;
-      min-height: 296mm;
+      width: 794px;
+      min-height: 1122px;
       background: #ffffff;
       color: #000000;
       font-family: "Times New Roman", Times, serif;
       box-sizing: border-box;
+      padding: 50px 60px;
     }
-    .kop-title-1 { font-size: 13pt; font-weight: bold; letter-spacing: 0.3px; }
-    .kop-title-2 { font-size: 11.5pt; font-weight: bold; }
-    .kop-title-3 { font-size: 14pt; font-weight: bold; }
-    .kop-address { font-size: 9.5pt; }
+    .kop-title-1 { font-size: 17px; font-weight: bold; letter-spacing: 0.3px; }
+    .kop-title-2 { font-size: 15px; font-weight: bold; }
+    .kop-title-3 { font-size: 18px; font-weight: bold; }
+    .kop-address { font-size: 12.5px; }
   </style>
 </head>
 <body class="text-slate-800">
@@ -104,14 +105,13 @@
       </div>
 
       <div class="overflow-x-auto pb-4 rounded-xl border border-slate-300 bg-slate-200 p-3 sm:p-5">
-        <!-- Area yang akan dicetak menjadi PDF -->
-        <div id="pdfContent" class="paper-a4 mx-auto shadow-lg" style="padding: 15mm 18mm;">
+        <!-- Template Kertas A4 -->
+        <div id="pdfContent" class="paper-a4 shadow-lg">
           
-          <!-- KOP SURAT RESMI + LOGO INLINE SVG (ANTI BLANK) -->
-          <table style="width: 100%; border-collapse: collapse; border-bottom: 3px double #000000; padding-bottom: 8px; margin-bottom: 14px;">
+          <!-- KOP SURAT RESMI -->
+          <table style="width: 100%; border-collapse: collapse; border-bottom: 3px double #000000; margin-bottom: 18px;">
             <tr>
-              <td style="width: 82px; vertical-align: middle; padding-bottom: 8px;">
-                <!-- Logo Vektor Kemensos RI -->
+              <td style="width: 82px; vertical-align: middle; padding-bottom: 10px;">
                 <svg width="72" height="80" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="44" cy="40" r="22" fill="#23408e"/>
                   <path d="M10 62 C32 76, 54 76, 70 70 C58 100, 56 125, 58 148 C48 112, 32 84, 10 62 Z" fill="#23408e"/>
@@ -122,7 +122,7 @@
                   <path d="M4 142 C24 198, 98 220, 158 192 C182 180, 194 162, 196 142 L182 142 C178 164, 160 180, 132 184 C150 174, 162 160, 166 142 L152 142 C146 160, 130 174, 104 178 C122 168, 134 156, 138 142 L124 142 C118 156, 102 168, 76 172 C94 164, 106 154, 110 142 L94 142 C82 164, 42 172, 4 142 Z" fill="#f7c600"/>
                 </svg>
               </td>
-              <td style="text-align: center; vertical-align: middle; padding-bottom: 8px; line-height: 1.25;">
+              <td style="text-align: center; vertical-align: middle; padding-bottom: 10px; line-height: 1.3;">
                 <div class="kop-title-1">KEMENTERIAN SOSIAL REPUBLIK INDONESIA</div>
                 <div class="kop-title-2">PUSAT PENDIDIKAN PELATIHAN DAN PENGEMBANGAN PROFESI</div>
                 <div class="kop-title-3">SEKOLAH RAKYAT TERINTEGRASI 1 KABUPATEN PASURUAN</div>
@@ -133,16 +133,16 @@
           </table>
 
           <!-- Judul Laporan -->
-          <div style="text-align: center; margin-bottom: 16px;">
-            <div style="font-size: 13pt; font-weight: bold; text-decoration: underline;">LAPORAN KEGIATAN EKSTRAKURIKULER</div>
-            <div id="prevSubJudul" style="font-size: 11pt; font-weight: bold; margin-top: 2px;">Laporan Pertemuan Ke-1</div>
+          <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 17px; font-weight: bold; text-decoration: underline;">LAPORAN KEGIATAN EKSTRAKURIKULER</div>
+            <div id="prevSubJudul" style="font-size: 14.5px; font-weight: bold; margin-top: 3px;">Laporan Pertemuan Ke-1</div>
           </div>
 
           <!-- Identitas Kegiatan -->
-          <table style="width: 100%; border-collapse: collapse; font-size: 11pt; margin-bottom: 14px; line-height: 1.6;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 14.5px; margin-bottom: 18px; line-height: 1.65;">
             <tr>
-              <td style="width: 185px; font-weight: bold;">Nama Ekstrakurikuler</td>
-              <td style="width: 15px;">:</td>
+              <td style="width: 210px; font-weight: bold;">Nama Ekstrakurikuler</td>
+              <td style="width: 16px;">:</td>
               <td id="prevEkskul" style="font-weight: bold;">-</td>
             </tr>
             <tr>
@@ -163,33 +163,33 @@
           </table>
 
           <!-- Bagian A: Materi -->
-          <div style="margin-bottom: 14px;">
-            <div style="font-size: 11pt; font-weight: bold; border-bottom: 1px solid #999; padding-bottom: 3px; margin-bottom: 6px;">
+          <div style="margin-bottom: 18px;">
+            <div style="font-size: 14.5px; font-weight: bold; border-bottom: 1px solid #999; padding-bottom: 4px; margin-bottom: 8px;">
               A. MATERI / URAIAN KEGIATAN
             </div>
-            <div id="prevMateri" style="font-size: 11pt; line-height: 1.5; border: 1px solid #cbd5e1; border-radius: 4px; padding: 10px; min-height: 75px; white-space: pre-wrap;">Belum ada uraian materi yang dimasukkan.</div>
+            <div id="prevMateri" style="font-size: 14.5px; line-height: 1.55; border: 1px solid #cbd5e1; border-radius: 4px; padding: 12px; min-height: 85px; white-space: pre-wrap;">Belum ada uraian materi yang dimasukkan.</div>
           </div>
 
           <!-- Bagian B: Dokumentasi Foto -->
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 11pt; font-weight: bold; border-bottom: 1px solid #999; padding-bottom: 3px; margin-bottom: 8px;">
+          <div style="margin-bottom: 22px;">
+            <div style="font-size: 14.5px; font-weight: bold; border-bottom: 1px solid #999; padding-bottom: 4px; margin-bottom: 10px;">
               B. DOKUMENTASI KEGIATAN
             </div>
-            <div id="prevFotoGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-              <div style="grid-column: span 2; text-align: center; color: #64748b; font-size: 10pt; border: 1px dashed #cbd5e1; padding: 24px; border-radius: 4px;">
+            <div id="prevFotoGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+              <div style="grid-column: span 2; text-align: center; color: #64748b; font-size: 13.5px; border: 1px dashed #cbd5e1; padding: 28px; border-radius: 4px;">
                 Belum ada foto dokumentasi yang diunggah.
               </div>
             </div>
           </div>
 
           <!-- Bagian Tanda Tangan -->
-          <table style="width: 100%; margin-top: 16px; font-size: 11pt; line-height: 1.4;">
+          <table style="width: 100%; margin-top: 20px; font-size: 14.5px; line-height: 1.45;">
             <tr>
               <td style="width: 55%;"></td>
               <td style="width: 45%; text-align: center;">
                 <div>Pasuruan, <span id="prevTglTtd">-</span></div>
                 <div>Pembina Ekstrakurikuler,</div>
-                <div style="height: 55px;"></div>
+                <div style="height: 65px;"></div>
                 <div id="prevPembina" style="font-weight: bold; text-decoration: underline;">( ........................................ )</div>
               </td>
             </tr>
@@ -201,9 +201,6 @@
   </main>
 
   <script>
-    let uploadedImages = [];
-
-    // Set tanggal hari ini secara default
     window.addEventListener('DOMContentLoaded', () => {
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('inputTanggal').value = today;
@@ -245,7 +242,6 @@
 
     function handleImages(event) {
       const files = Array.from(event.target.files).slice(0, 4);
-      uploadedImages = [];
       const thumbContainer = document.getElementById('thumbContainer');
       const prevFotoGrid = document.getElementById('prevFotoGrid');
       
@@ -254,7 +250,7 @@
 
       if (files.length === 0) {
         prevFotoGrid.innerHTML = `
-          <div style="grid-column: span 2; text-align: center; color: #64748b; font-size: 10pt; border: 1px dashed #cbd5e1; padding: 24px; border-radius: 4px;">
+          <div style="grid-column: span 2; text-align: center; color: #64748b; font-size: 13.5px; border: 1px dashed #cbd5e1; padding: 28px; border-radius: 4px;">
             Belum ada foto dokumentasi yang diunggah.
           </div>`;
         return;
@@ -264,20 +260,17 @@
         const reader = new FileReader();
         reader.onload = function(e) {
           const dataUrl = e.target.result;
-          uploadedImages.push(dataUrl);
 
-          // Thumbnail kecil di form
           const thumb = document.createElement('img');
           thumb.src = dataUrl;
           thumb.className = 'w-full h-16 object-cover rounded border border-slate-300';
           thumbContainer.appendChild(thumb);
 
-          // Foto di dalam kertas A4 PDF
           const imgWrapper = document.createElement('div');
-          imgWrapper.style.cssText = 'border: 1px solid #cbd5e1; padding: 4px; border-radius: 4px; text-align: center; background: #fff;';
+          imgWrapper.style.cssText = 'border: 1px solid #cbd5e1; padding: 5px; border-radius: 4px; text-align: center; background: #fff;';
           const img = document.createElement('img');
           img.src = dataUrl;
-          img.style.cssText = 'width: 100%; height: 155px; object-fit: cover; display: block;';
+          img.style.cssText = 'width: 100%; height: 185px; object-fit: cover; display: block;';
           imgWrapper.appendChild(img);
           prevFotoGrid.appendChild(imgWrapper);
         };
@@ -291,10 +284,17 @@
       btn.innerHTML = '<span>Memproses PDF...</span>';
       btn.disabled = true;
 
-      // Kunci posisi scroll ke atas agar tidak ada garis hitam / halaman terpotong
-      window.scrollTo(0, 0);
+      // Buat kontainer kloningan tepat di koordinat (0,0) agar tidak pernah terpotong
+      const originalElement = document.getElementById('pdfContent');
+      const cloneWrapper = document.createElement('div');
+      cloneWrapper.style.cssText = 'position: fixed; top: 0; left: 0; width: 794px; background: #ffffff; z-index: -9999; margin: 0; padding: 0;';
+      
+      const clonedPaper = originalElement.cloneNode(true);
+      clonedPaper.style.margin = '0';
+      clonedPaper.style.boxShadow = 'none';
+      cloneWrapper.appendChild(clonedPaper);
+      document.body.appendChild(cloneWrapper);
 
-      const element = document.getElementById('pdfContent');
       const ekskul = (document.getElementById('inputEkskul').value.trim() || 'Ekstrakurikuler').replace(/\s+/g, '_');
       const pertemuan = document.getElementById('inputPertemuan').value || '1';
       const filename = `Laporan_${ekskul}_Pertemuan_${pertemuan}_SRT1.pdf`;
@@ -306,18 +306,25 @@
         html2canvas: {
           scale: 2,
           useCORS: true,
-          scrollY: 0,
+          x: 0,
+          y: 0,
           scrollX: 0,
-          windowWidth: 1024
+          scrollY: 0,
+          width: 794,
+          windowWidth: 794
         },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        jsPDF: { unit: 'px', format: [794, 1122], orientation: 'portrait' }
       };
 
-      html2pdf().set(opt).from(element).save().then(() => {
+      html2pdf().set(opt).from(clonedPaper).save().then(() => {
+        document.body.removeChild(cloneWrapper);
         btn.innerHTML = originalText;
         btn.disabled = false;
       }).catch((err) => {
         console.error(err);
+        if (document.body.contains(cloneWrapper)) {
+          document.body.removeChild(cloneWrapper);
+        }
         btn.innerHTML = originalText;
         btn.disabled = false;
         alert('Gagal membuat PDF. Silakan coba lagi.');
