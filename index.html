@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Ekstrakurikuler - SRT 1 Kab. Pasuruan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- html2pdf.js untuk generate PDF berkualitas tinggi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, .font-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        /* Styling khusus area dokumen PDF agar menyerupai kertas A4 resmi */
+        .a4-paper {
+            font-family: 'Times New Roman', Times, serif;
+            background: white;
+            color: #000000;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        /* Custom scrollbar untuk preview di layar kecil */
+        .preview-scroll::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        .preview-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .preview-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .preview-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Notifikasi Toast (Pengganti alert()) -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Header / Navbar -->
+    <header class="bg-emerald-800 text-white shadow-md sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/15 p-2.5 rounded-xl backdrop-blur-sm border border-white/20">
+                    <i data-lucide="file-check-2" class="w-7 h-7 text-emerald-200"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-tight">E-Laporan Ekstrakurikuler</h1>
+                    <p class="text-xs sm:text-sm text-emerald-200 font-medium">SRT 1 Kabupaten Pasuruan</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs bg-emerald-900/60 px-3 py-1.5 rounded-full border border-emerald-700">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Format Laporan 1 Pertemuan (PDF)</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Kolom Kiri: Form Input Laporan -->
+            <div class="lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6">
+                <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="edit-3" class="w-5 h-5 text-emerald-600"></i>
+                        <h2 class="text-lg font-bold text-slate-800">Input Data Pertemuan</h2>
+                    </div>
+                    <button type="button" onclick="resetForm()" class="text-xs text-slate-500 hover:text-rose-600 flex items-center gap-1 transition-colors px-2 py-1 rounded-lg hover:bg-rose-50">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                    </button>
+                </div>
+
+                <form id="reportForm" class="space-y-4" onsubmit="event.preventDefault(); downloadPDF();">
+                    
+                    <!-- Nama Ekstrakurikuler -->
+                    <div>
+                        <label for="namaEkskul" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                            Nama Ekstrakurikuler <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="namaEkskul" list="ekskulList" placeholder="Contoh: Pramuka, Paskibra, Futsal, Hadrah..." required
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                                oninput="updatePreview()">
+                            <datalist id="ekskulList">
+                                <option value="Pramuka">
+                                <option value="Paskibra">
+                                <option value="Palang Merah Remaja (PMR)">
+                                <option value="Futsal">
+                                <option value="Bola Voli">
+                                <option value="Seni Hadrah / Al-Banjari">
+                                <option value="Tari Tradisional">
+                                <option value="Pencak Silat">
+                                <option value="English Club">
+                                <option value="Karya Ilmiah Remaja (KIR)">
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <!-- Tanggal & Pertemuan Ke -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label for="tanggal" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                Tanggal Kegiatan <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="date" id="tanggal" required
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                                oninput="updatePreview()">
+                        </div>
+                        <div>
+                            <label for="pertemuanKe" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                Pertemuan Ke- <span class="text-slate-400 font-normal">(Opsional)</span>
+                            </label>
+                            <input type="number" id="pertemuanKe" min="1" placeholder="Contoh: 1"
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                                oninput="updatePreview()">
+                        </div>
+                    </div>
+
+                    <!-- Materi Kegiatan -->
+                    <div>
+                        <label for="materi" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                            Materi / Uraian Kegiatan <span class="text-rose-500">*</span>
+                        </label>
+                        <textarea id="materi" rows="4" required placeholder="Tuliskan materi yang disampaikan atau ringkasan kegiatan selama pertemuan..."
+                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all resize-y"
+                            oninput="updatePreview()"></textarea>
+                    </div>
+
+                    <!-- Nama Pembina (Opsional untuk tanda tangan PDF) -->
+                    <div>
+                        <label for="pembina" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                            Nama Pembina / Pelatih <span class="text-slate-400 font-normal">(Untuk Tanda Tangan)</span>
+                        </label>
+                        <input type="text" id="pembina" placeholder="Contoh: Budi Santoso, S.Pd."
+                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                            oninput="updatePreview()">
+                    </div>
+
+                    <!-- Upload Foto Dokumentasi -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+                            Foto Dokumentasi Kegiatan <span class="text-rose-500">*</span>
+                        </label>
+                        <div id="dropzone" class="border-2 border-dashed border-slate-300 hover:border-emerald-500 bg-slate-50 hover:bg-emerald-50/40 rounded-xl p-4 text-center cursor-pointer transition-all relative"
+                            onclick="document.getElementById('fotoInput').click()">
+                            <input type="file" id="fotoInput" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
+                            <div class="flex flex-col items-center justify-center py-2">
+                                <div class="bg-emerald-100 text-emerald-700 p-2.5 rounded-full mb-2">
+                                    <i data-lucide="camera" class="w-6 h-6"></i>
+                                </div>
+                                <p class="text-sm font-medium text-slate-700">Klik untuk unggah foto kegiatan</p>
+                                <p class="text-xs text-slate-500 mt-1">Bisa pilih 1 hingga 4 foto (JPG, PNG, WEBP)</p>
+                            </div>
+                        </div>
+
+                        <!-- Thumbnail Foto Terpilih -->
+                        <div id="thumbnailContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-3 hidden"></div>
+                    </div>
+
+                    <!-- Tombol Download PDF -->
+                    <div class="pt-3">
+                        <button type="submit" id="btnDownload"
+                            class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold py-3.5 px-5 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 cursor-pointer">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                            <span>Download Laporan PDF</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Kolom Kanan: Live Preview Dokumen PDF -->
+            <div class="lg:col-span-7 flex flex-col">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="eye" class="w-4 h-4 text-emerald-600"></i>
+                        <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Pratinjau Dokumen PDF (A4)</h3>
+                    </div>
+                    <span class="text-xs text-slate-500">Tampilan otomatis menyesuaikan input</span>
+                </div>
+
+                <!-- Wrapper Scrollable untuk Layar Mobile -->
+                <div class="bg-slate-200/80 p-3 sm:p-6 rounded-2xl border border-slate-300/80 overflow-x-auto preview-scroll flex justify-center">
+                    
+                    <!-- ELEMEN TARGET EXPORT PDF -->
+                    <div id="pdf-document" class="a4-paper w-[210mm] min-w-[210mm] min-h-[297mm] p-[18mm] flex flex-col justify-between box-border">
+                        <div>
+                            <!-- KOP SURAT RESMI -->
+                            <div class="border-b-[3px] border-black pb-3 mb-5 flex items-center justify-between gap-3">
+                                <!-- Logo Kementerian Sosial RI (SVG Vektor Presisi Tinggi agar tajam di PDF) -->
+                                <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+                                    <svg viewBox="0 0 800 900" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                                        <!-- Elemen Biru (Sosok Manusia) -->
+                                        <circle cx="165" cy="185" r="72" fill="#234385"/>
+                                        <path d="M25 240 C105 315, 195 315, 255 275 C215 390, 210 510, 222 615 C190 480, 130 345, 25 240 Z" fill="#234385"/>
+                                        <!-- Elemen Hijau (4 Helai Daun/Tunas) -->
+                                        <path d="M235 555 C235 330, 355 125, 565 10 L552 80 C385 180, 275 350, 235 555 Z" fill="#00923F"/>
+                                        <path d="M242 580 C265 375, 415 190, 675 55 L645 162 C445 255, 305 405, 242 580 Z" fill="#00923F"/>
+                                        <path d="M248 605 C295 430, 465 275, 665 190 L800 245 C545 310, 355 445, 248 605 Z" fill="#00923F"/>
+                                        <path d="M250 630 C320 490, 445 385, 560 335 L655 375 C490 425, 345 515, 250 630 Z" fill="#00923F"/>
+                                        <!-- Elemen Kuning (Tangan Menopang) -->
+                                        <path d="M2 585 C55 725, 185 835, 375 835 C555 835, 695 725, 735 585 L685 585 C655 685, 575 765, 425 785 C535 745, 605 675, 635 585 L585 585 C555 675, 475 745, 345 765 C445 725, 505 665, 535 585 L485 585 C455 665, 385 725, 265 745 C355 705, 405 655, 435 585 L385 585 C355 655, 295 705, 195 725 C275 685, 315 645, 345 585 L295 585 C255 645, 165 685, 65 645 C35 625, 15 605, 2 585 Z" fill="#F8C300"/>
+                                        <path d="M2 585 C35 765, 195 895, 385 895 C575 895, 715 765, 738 585 L705 585 C675 725, 555 835, 385 835 C205 835, 65 725, 2 585 Z" fill="#F8C300"/>
+                                    </svg>
+                                </div>
+                                <div class="text-center flex-grow">
+                                    <p class="text-[11pt] font-bold tracking-wide uppercase leading-snug">KEMENTERIAN SOSIAL REPUBLIK INDONESIA</p>
+                                    <p class="text-[10.5pt] font-bold tracking-wide uppercase leading-snug">PUSAT PENDIDIKAN PELATIHAN DAN PENGEMBANGAN PROFESI</p>
+                                    <h1 class="text-[12pt] font-extrabold tracking-wide uppercase leading-snug">SEKOLAH RAKYAT TERINTEGRASI 1 KABUPATEN PASURUAN</h1>
+                                    <p class="text-[9.5pt] leading-snug text-black mt-0.5">Desa Lajuk Kecamatan Gondang Wetan Kabupaten Pasuruan, Jawa Timur</p>
+                                    <p class="text-[9.5pt] leading-snug text-black">Pos-el : sekolahrakyat0kabpasuruan@gmail.com Kode Pos 67174</p>
+                                </div>
+                            </div>
+
+                            <!-- JUDUL LAPORAN -->
+                            <div class="text-center mb-6">
+                                <h2 class="text-[13pt] font-bold uppercase underline underline-offset-4">LAPORAN KEGIATAN EKSTRAKURIKULER</h2>
+                                <p id="prev-subtitle" class="text-[10.5pt] mt-1 font-semibold">Laporan Pertemuan Kegiatan</p>
+                            </div>
+
+                            <!-- TABEL IDENTITAS KEGIATAN -->
+                            <table class="w-full text-[11pt] mb-6 border-collapse">
+                                <tbody>
+                                    <tr>
+                                        <td class="py-1.5 w-48 font-bold align-top">Nama Ekstrakurikuler</td>
+                                        <td class="py-1.5 w-4 align-top">:</td>
+                                        <td id="prev-ekskul" class="py-1.5 font-semibold align-top text-black">[Nama Ekstrakurikuler]</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 font-bold align-top">Hari, Tanggal</td>
+                                        <td class="py-1.5 align-top">:</td>
+                                        <td id="prev-tanggal" class="py-1.5 align-top text-black">[Hari, Tanggal Kegiatan]</td>
+                                    </tr>
+                                    <tr id="row-pertemuan" class="hidden">
+                                        <td class="py-1.5 font-bold align-top">Pertemuan Ke-</td>
+                                        <td class="py-1.5 align-top">:</td>
+                                        <td id="prev-pertemuan" class="py-1.5 align-top text-black">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 font-bold align-top">Tempat Pelaksanaan</td>
+                                        <td class="py-1.5 align-top">:</td>
+                                        <td class="py-1.5 align-top text-black">Lingkungan Sekolah Rakyat Terintegrasi 1 Kabupaten Pasuruan</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- BAGIAN MATERI KEGIATAN -->
+                            <div class="mb-6">
+                                <h3 class="text-[11pt] font-bold uppercase mb-2 border-b border-gray-400 pb-1">A. Materi / Uraian Kegiatan</h3>
+                                <div id="prev-materi" class="text-[11pt] leading-relaxed text-justify whitespace-pre-line min-h-[75px] p-3 border border-gray-300 rounded bg-gray-50/40">
+                                    Belum ada materi yang diinputkan. Silakan isi materi kegiatan pada formulir di samping.
+                                </div>
+                            </div>
+
+                            <!-- BAGIAN DOKUMENTASI FOTO -->
+                            <div class="mb-4">
+                                <h3 class="text-[11pt] font-bold uppercase mb-2.5 border-b border-gray-400 pb-1">B. Dokumentasi Kegiatan</h3>
+                                
+                                <!-- Placeholder jika belum ada foto -->
+                                <div id="prev-no-photo" class="border border-dashed border-gray-400 rounded p-8 text-center text-gray-500 text-[10pt]">
+                                    Foto dokumentasi kegiatan akan ditampilkan di sini setelah diunggah.
+                                </div>
+
+                                <!-- Grid Foto Dokumentasi -->
+                                <div id="prev-photo-grid" class="grid grid-cols-2 gap-3 hidden"></div>
+                            </div>
+                        </div>
+
+                        <!-- BAGIAN TANDA TANGAN -->
+                        <div class="mt-8 pt-4 flex justify-end">
+                            <div class="w-64 text-center text-[11pt]">
+                                <p id="prev-ttd-tanggal">Pasuruan, ..............................</p>
+                                <p class="mt-0.5">Pembina / Pelatih Ekstrakurikuler,</p>
+                                <div class="h-16"></div>
+                                <p id="prev-pembina" class="font-bold underline underline-offset-2">( ........................................ )</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- AKHIR ELEMEN PDF -->
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            &copy; 2026 Sistem Pelaporan Ekstrakurikuler - SRT 1 Kabupaten Pasuruan.
+        </div>
+    </footer>
+
+    <script>
+        // Inisialisasi ikon Lucide
+        lucide.createIcons();
+
+        // State penyimpanan foto (dalam format Data URL untuk rendering PDF yang andal tanpa masalah CORS)
+        let uploadedPhotos = [];
+
+        // Set tanggal default ke hari ini saat halaman dibuka
+        window.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal').value = today;
+            updatePreview();
+        });
+
+        // Fungsi menampilkan notifikasi toast pengganti alert()
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-emerald-700 text-white border-emerald-800',
+                error: 'bg-rose-600 text-white border-rose-700',
+                info: 'bg-slate-800 text-white border-slate-900'
+            };
+
+            toast.className = `${colors[type] || colors.info} px-4 py-3 rounded-xl shadow-lg border text-sm font-medium flex items-center gap-2.5 transform transition-all duration-300 translate-x-full opacity-0 pointer-events-auto`;
+            toast.innerHTML = `<span>${message}</span>`;
+            
+            container.appendChild(toast);
+
+            // Animasi masuk
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            });
+
+            // Hapus otomatis setelah 3.5 detik
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Format tanggal Indonesia lengkap dengan nama hari
+        function formatTanggalIndonesia(dateString) {
+            if (!dateString) return '[Hari, Tanggal Kegiatan]';
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            
+            const [year, month, day] = dateString.split('-').map(Number);
+            const dateObj = new Date(year, month - 1, day);
+            
+            const dayName = days[dateObj.getDay()];
+            const monthName = months[dateObj.getMonth()];
+            return `${dayName}, ${day} ${monthName} ${year}`;
+        }
+
+        // Format tanggal tanpa nama hari (untuk titimangsa tanda tangan)
+        function formatTitimangsa(dateString) {
+            if (!dateString) return 'Pasuruan, ..............................';
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            const [year, month, day] = dateString.split('-').map(Number);
+            return `Pasuruan, ${day} ${months[month - 1]} ${year}`;
+        }
+
+        // Update pratinjau dokumen secara real-time
+        function updatePreview() {
+            const namaEkskul = document.getElementById('namaEkskul').value.trim();
+            const tanggal = document.getElementById('tanggal').value;
+            const pertemuanKe = document.getElementById('pertemuanKe').value.trim();
+            const materi = document.getElementById('materi').value.trim();
+            const pembina = document.getElementById('pembina').value.trim();
+
+            // Update teks identitas
+            document.getElementById('prev-ekskul').textContent = namaEkskul || '[Nama Ekstrakurikuler]';
+            document.getElementById('prev-tanggal').textContent = formatTanggalIndonesia(tanggal);
+            document.getElementById('prev-ttd-tanggal').textContent = formatTitimangsa(tanggal);
+
+            // Update pertemuan ke-
+            const rowPertemuan = document.getElementById('row-pertemuan');
+            const prevSubtitle = document.getElementById('prev-subtitle');
+            if (pertemuanKe) {
+                rowPertemuan.classList.remove('hidden');
+                document.getElementById('prev-pertemuan').textContent = `Pertemuan Ke-${pertemuanKe}`;
+                prevSubtitle.textContent = `Laporan Pertemuan Ke-${pertemuanKe}`;
+            } else {
+                rowPertemuan.classList.add('hidden');
+                prevSubtitle.textContent = 'Laporan 1 Pertemuan Kegiatan';
+            }
+
+            // Update materi
+            const prevMateri = document.getElementById('prev-materi');
+            if (materi) {
+                prevMateri.textContent = materi;
+                prevMateri.classList.remove('text-gray-400', 'italic');
+            } else {
+                prevMateri.textContent = 'Belum ada materi yang diinputkan. Silakan isi materi kegiatan pada formulir di samping.';
+                prevMateri.classList.add('text-gray-400', 'italic');
+            }
+
+            // Update nama pembina
+            document.getElementById('prev-pembina').textContent = pembina ? pembina : '( ........................................ )';
+        }
+
+        // Handle upload foto & kompresi ringan agar PDF cepat di-generate dan tidak terlalu besar
+        function handleImageUpload(event) {
+            const files = Array.from(event.target.files);
+            if (!files.length) return;
+
+            const remainingSlots = 4 - uploadedPhotos.length;
+            if (remainingSlots <= 0) {
+                showToast('Maksimal 4 foto dokumentasi per laporan.', 'error');
+                return;
+            }
+
+            const filesToProcess = files.slice(0, remainingSlots);
+            if (files.length > remainingSlots) {
+                showToast(`Hanya ${remainingSlots} foto pertama yang ditambahkan (maksimal 4 foto).`, 'info');
+            }
+
+            filesToProcess.forEach(file => {
+                if (!file.type.startsWith('image/')) {
+                    showToast(`File ${file.name} bukan format gambar.`, 'error');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Kompres gambar menggunakan canvas agar ukuran file PDF optimal
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 1000;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                        uploadedPhotos.push({
+                            id: Date.now() + Math.random(),
+                            src: compressedDataUrl,
+                            name: file.name
+                        });
+                        renderPhotos();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // Reset input file agar bisa memilih file yang sama jika dihapus
+            event.target.value = '';
+        }
+
+        // Hapus foto tertentu
+        function removePhoto(id) {
+            uploadedPhotos = uploadedPhotos.filter(photo => photo.id !== id);
+            renderPhotos();
+        }
+
+        // Render thumbnail di form dan grid foto di pratinjau PDF
+        function renderPhotos() {
+            const thumbContainer = document.getElementById('thumbnailContainer');
+            const prevNoPhoto = document.getElementById('prev-no-photo');
+            const prevPhotoGrid = document.getElementById('prev-photo-grid');
+
+            thumbContainer.innerHTML = '';
+            prevPhotoGrid.innerHTML = '';
+
+            if (uploadedPhotos.length === 0) {
+                thumbContainer.classList.add('hidden');
+                prevNoPhoto.classList.remove('hidden');
+                prevPhotoGrid.classList.add('hidden');
+                return;
+            }
+
+            thumbContainer.classList.remove('hidden');
+            prevNoPhoto.classList.add('hidden');
+            prevPhotoGrid.classList.remove('hidden');
+
+            // Atur layout grid PDF berdasarkan jumlah foto (jika 1 foto dibuat lebih besar & proporsional)
+            if (uploadedPhotos.length === 1) {
+                prevPhotoGrid.className = 'grid grid-cols-1 gap-3';
+            } else {
+                prevPhotoGrid.className = 'grid grid-cols-2 gap-3';
+            }
+
+            uploadedPhotos.forEach((photo, index) => {
+                // 1. Render Thumbnail di Form Input
+                const thumbDiv = document.createElement('div');
+                thumbDiv.className = 'relative group rounded-lg overflow-hidden border border-slate-200 aspect-video bg-slate-100';
+                thumbDiv.innerHTML = `
+                    <img src="${photo.src}" alt="Dokumentasi ${index + 1}" class="w-full h-full object-cover">
+                    <button type="button" onclick="removePhoto(${photo.id})" title="Hapus foto"
+                        class="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow hover:bg-rose-700 transition-opacity">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                `;
+                thumbContainer.appendChild(thumbDiv);
+
+                // 2. Render Foto di Dokumen PDF
+                const pdfPhotoBox = document.createElement('div');
+                pdfPhotoBox.className = 'border border-gray-300 p-1.5 rounded bg-white flex flex-col items-center';
+                const imgHeightClass = uploadedPhotos.length === 1 ? 'max-h-[75mm]' : 'h-[48mm]';
+                pdfPhotoBox.innerHTML = `
+                    <img src="${photo.src}" alt="Dokumentasi ${index + 1}" class="w-full ${imgHeightClass} object-cover rounded-sm">
+                    <span class="text-[9pt] text-gray-600 mt-1">Dokumentasi ${index + 1}</span>
+                `;
+                prevPhotoGrid.appendChild(pdfPhotoBox);
+            });
+        }
+
+        // Reset seluruh form
+        function resetForm() {
+            document.getElementById('reportForm').reset();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal').value = today;
+            uploadedPhotos = [];
+            renderPhotos();
+            updatePreview();
+            showToast('Formulir berhasil dikosongkan.', 'info');
+        }
+
+        // Generate dan Download File PDF
+        async function downloadPDF() {
+            const namaEkskul = document.getElementById('namaEkskul').value.trim();
+            const tanggal = document.getElementById('tanggal').value;
+            const materi = document.getElementById('materi').value.trim();
+
+            if (!namaEkskul || !tanggal || !materi) {
+                showToast('Harap lengkapi Nama Ekstrakurikuler, Tanggal, dan Materi!', 'error');
+                return;
+            }
+
+            if (uploadedPhotos.length === 0) {
+                showToast('Harap unggah minimal 1 foto dokumentasi kegiatan!', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('btnDownload');
+            const originalHTML = btn.innerHTML;
+            
+            // Ubah status tombol menjadi loading
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+            btn.innerHTML = `
+                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Memproses PDF...</span>
+            `;
+
+            try {
+                const element = document.getElementById('pdf-document');
+                // Buat nama file yang rapi
+                const cleanEkskul = namaEkskul.replace(/[^a-zA-Z0-9]/g, '_');
+                const fileName = `Laporan_Ekskul_${cleanEkskul}_${tanggal}_SRT1_Pasuruan.pdf`;
+
+                const opt = {
+                    margin:       0,
+                    filename:     fileName,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, logging: false },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                // Hapus bayangan sementara saat export agar bersih
+                element.classList.remove('shadow-lg');
+                await html2pdf().set(opt).from(element).save();
+                element.classList.add('shadow-lg');
+
+                showToast('Laporan PDF berhasil diunduh!', 'success');
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                showToast('Terjadi kesalahan saat membuat PDF. Silakan coba lagi.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = originalHTML;
+            }
+        }
+    </script>
+</body>
+</html>
